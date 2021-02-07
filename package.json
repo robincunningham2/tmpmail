@@ -1,0 +1,23 @@
+{
+  "name": "mail.tm",
+  "version": "1.0.0",
+  "description": "NodeJS api for temporary mail",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/robincunningham2/mail.tm.git"
+  },
+  "keywords": [
+    "temp-mail",
+    "temporary-email"
+  ],
+  "author": "Robin Cunningham",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/robincunningham2/mail.tm/issues"
+  },
+  "homepage": "https://github.com/robincunningham2/mail.tm#readme"
+}
