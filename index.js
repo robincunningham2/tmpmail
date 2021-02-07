@@ -1,3 +1,6 @@
+
+'use strict';
+
 const http = require('http');
 const HOST = 'api.mail.tm';
 
