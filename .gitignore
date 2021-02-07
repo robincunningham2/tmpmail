@@ -1,0 +1,12 @@
+# Project files
+.idea/
+
+# System files
+.DS_Store
+
+# External disks files
+.Spotlight-V100/
+.Trashes/
+
+# Dependencies
+node_modules/
