@@ -4,6 +4,16 @@
 const http = require('http');
 const HOST = 'api.mail.tm';
 
+/**
+ * Makes a request from a method, path and optionally, data
+ * 
+ * @method makeRequest
+ * @param {string} method Request method in uppercase. e.g. GET, POST, etc
+ * @param {string} path Request path from api.mail.tm
+ * @param {*} data Optional. If request is POST, this parameter will be posted
+ * @returns {Promise<Object>} Status code and data
+ * @private
+ */
 function makeRequest(method, path, data='') {
     let options = {
         host: HOST,
@@ -41,6 +51,13 @@ function makeRequest(method, path, data='') {
     });
 }
 
+/**
+ * Retrieves all temporary mail domains
+ * 
+ * @method domains
+ * @returns {Promise<Array<String>>} Domains
+ * @private
+ */
 function domains() {
     return new Promise((resolve, reject) => {
         makeRequest('GET', '/domains').then(res => {
