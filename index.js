@@ -37,3 +37,16 @@ function makeRequest(method, path, data='') {
         request.end();
     });
 }
+
+function domains() {
+    return new Promise((resolve, reject) => {
+        makeRequest('GET', '/domains').then(res => {
+            let domains = [];
+            res.data.forEach(domain => {
+                if (domain.is_active && !domain.is_private) domains.push(domain.domain);
+            });
+
+            resolve(domains);
+        }).catch(reject);
+    });
+}
