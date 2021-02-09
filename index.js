@@ -98,7 +98,7 @@ function Mailbox() {
                         tokens = [];
                     
                     res.body.forEach(msg => {
-                        let id = generateHash(16);
+                        let id = generateHash(16, tokens, 'hex').toString('hex');
 
                         tokens.push(id);
                         messages.push({
@@ -106,7 +106,7 @@ function Mailbox() {
                             from: msg.from,
                             to: this.id,
                             subject: msg.subject,
-                            date: new Date.now(msg.date)
+                            date: new Date(msg.date)
                         });
                     });
 
