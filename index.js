@@ -102,10 +102,10 @@ function Mailbox() {
 
     /**
      * Fetches all the messages in the inbox
-     * @method Mailbox.prototype.fetchMessages
+     * @method Mailbox.prototype.fetch
      * @returns {Promise<Array<Object>>} Array with messages
      */
-    this.fetchMessages = function() {
+    this.fetch = function() {
         return new Promise((resolve, reject) => {
             get(`/?action=getMessages&login=${this.id.split('@')[0]}&domain=${this.id.split('@')[1]}`)
                 .then(res => {
