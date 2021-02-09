@@ -132,6 +132,13 @@ function Mailbox() {
     }
 }
 
+/**
+ * Creates a mailbox
+ * 
+ * @method Create
+ * @returns {Mailbox} The mailbox
+ * @public
+ */
 function Create() {
     const mailbox = new Mailbox();
     mailbox.connect();
