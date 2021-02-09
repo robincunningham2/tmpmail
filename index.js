@@ -163,4 +163,4 @@ function Login(address) {
     return mailbox;
 }
 
-module.exports = { Create };
+module.exports = { Create, Login };
