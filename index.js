@@ -70,6 +70,8 @@ function generateHash(len, used, type='hex') {
  */
 function Mailbox() {
     this._listeners = {};
+    this._messages = {};
+
     this.id = null;
 
     /**
@@ -126,18 +128,46 @@ function Mailbox() {
                     
                     res.body.forEach(msg => {
                         let id = generateHash(16, tokens, 'hex').toString('hex');
-
-                        tokens.push(id);
-                        messages.push({
+                        let message = {
                             _id: id,
                             from: msg.from,
                             to: this.id,
                             subject: msg.subject,
                             date: new Date(msg.date)
-                        });
+                        };
+
+                        tokens.push(id);
+                        messages.push(message);
+
+                        this._messages[id] = Object.assign(message, { _uid: msg.id });
                     });
 
                     resolve(messages);
+                })
+                .catch(reject);
+        });
+    }
+
+    this.findMessage = function(id) {
+        return new Promise((resolve, reject) => {
+            if (!this._messages[id]) return reject('Invalid ID');
+            let msg = this._messages[id];
+
+            get(`/?action=readMessage&login=${this.id.split('@')[0]}&domain=${this.id.split('@')[1]}&id=${msg._uid}`)
+                .then(res => {
+                    let message = {
+                        _id: msg._id,
+                        from: msg.from,
+                        to: msg.to,
+                        subject: msg.subject,
+                        date: msg.date,
+                        body: {
+                            text: res.body.textBody,
+                            html: res.body.htmlBody
+                        }
+                    };
+
+                    resolve(message);
                 })
                 .catch(reject);
         });
