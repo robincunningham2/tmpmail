@@ -47,7 +47,7 @@ function get(path) {
  * 
  * @method generateHash
  * @param {number} len Length of the buffer
- * @param {Array} used Array containing any type which will prevent the function from generating an already existing hash
+ * @param {any[]} used Array containing any type which will prevent the function from generating an already existing hash
  * @param {string} type Buffer type in used. Can be: hex, binary, utf8, etc.
  * @private
  */
@@ -103,7 +103,7 @@ function Mailbox() {
     /**
      * Fetches all the messages in the inbox
      * @method Mailbox.prototype.fetch
-     * @returns {Promise<Array<Object>>} Array with messages
+     * @returns {Promise<object[]>} Array with messages
      */
     this.fetch = function() {
         return new Promise((resolve, reject) => {
