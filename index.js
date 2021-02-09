@@ -83,8 +83,4 @@ function Mailbox() {
                 .catch(reject);
         });
     }
-
-    this.destroy = function() {
-
-    }
 }
