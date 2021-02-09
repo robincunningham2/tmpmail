@@ -5,6 +5,14 @@ const https = require('https');
 
 const API_URL = 'https://www.1secmail.com/api/v1';
 
+/**
+ * Makes a request to the api with an endpoint
+ * 
+ * @method get
+ * @param {string} path Api endpoint path
+ * @returns {Promise<Object>} Status code and body
+ * @private
+ */
 function get(path) {
     return new Promise((resolve, reject) => {
         https.get(API_URL + path,
@@ -33,6 +41,16 @@ function get(path) {
     });
 }
 
+/**
+ * Generates a unique buffer with array of used items.
+ * e.g. if used = ['0f'], and type = 'hex', there is no chance that it returns a '0f' hex buffer
+ * 
+ * @method generateHash
+ * @param {number} len Length of the buffer
+ * @param {Array} used Array containing any type which will prevent the function from generating an already existing hash
+ * @param {string} type Buffer type in used. Can be: hex, binary, utf8, etc.
+ * @private
+ */
 function generateHash(len, used, type='hex') {
     let hash = '';
     for (let i = 0; i < len * 2; i++) {
@@ -46,9 +64,18 @@ function generateHash(len, used, type='hex') {
     return hash;
 }
 
+/**
+ * @constructor
+ * @private
+ */
 function Mailbox() {
     this.id;
 
+    /**
+     * Connects the mailbox with a random mail address
+     * @method Mailbox.prototype.connect
+     * @returns {Promise<String>} Mail address
+     */
     this.connect = function() {
         return new Promise((resolve, reject) => {
             get('/?action=genRandomMailbox').then(res => {
@@ -58,6 +85,11 @@ function Mailbox() {
         });
     }
 
+    /**
+     * Fetches all the messages in the inbox
+     * @method Mailbox.prototype.fetchMessages
+     * @returns {Promise<Array<Object>>} Array with messages
+     */
     this.fetchMessages = function() {
         return new Promise((resolve, reject) => {
             get(`/?action=getMessages&login=${this.id.split('@')[0]}&domain=${this.id.split('@')[1]}`)
