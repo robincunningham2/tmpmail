@@ -77,7 +77,7 @@ function Mailbox() {
      * 
      * @method Mailbox.prototype.on
      * @param {string} event Event to be listened to
-     * @param {function} callback Calls when event is executed
+     * @param {function} callback Calls when event is called
      */
     this.on = function(event, callback) {
         this._listeners[event] = callback;
@@ -93,7 +93,7 @@ function Mailbox() {
             get('/?action=genRandomMailbox').then(res => {
                 this.id = res.body[0];
 
-                if (this._listeners['connect']) this._listeners['connect'](this.id);
+                if (this._listeners['ready']) this._listeners['ready'](this.id);
                 resolve(this.id);
             }).catch(reject);
 
