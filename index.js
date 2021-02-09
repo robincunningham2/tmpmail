@@ -69,7 +69,12 @@ function generateHash(len, used, type='hex') {
  * @private
  */
 function Mailbox() {
-    this.id;
+    this._listeners = {};
+    this.id = null;
+
+    this.on = function(event, callback) {
+        this._listeners[event] = callback;
+    }
 
     /**
      * Connects the mailbox with a random mail address
@@ -77,11 +82,15 @@ function Mailbox() {
      * @returns {Promise<String>} Mail address
      */
     this.connect = function() {
-        return new Promise((resolve, reject) => {
+        new Promise((resolve, reject) => {
             get('/?action=genRandomMailbox').then(res => {
                 this.id = res.body[0];
+
+                if (this._listeners['connect']) this._listeners['connect'](this.id);
                 resolve(this.id);
             }).catch(reject);
+
+            delete this.connect;
         });
     }
 
