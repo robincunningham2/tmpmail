@@ -144,3 +144,5 @@ function Create() {
     mailbox.connect();
     return mailbox;
 }
+
+module.exports = { Create };
