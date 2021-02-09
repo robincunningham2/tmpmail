@@ -89,8 +89,19 @@ function Mailbox() {
      * @method Mailbox.prototype.connect
      * @returns {Promise<String>} Mail address
      */
-    this.connect = function() {
+    this.connect = function(address) {
         delete this.connect;
+
+        if (address) {
+            this.id = address;
+
+            setTimeout(() => {
+                if (this._listeners['ready']) this._listeners['ready'](this.id);
+            }, 0);
+
+            return;
+        }
+
         new Promise((resolve, reject) => {
             get('/?action=genRandomMailbox').then(res => {
                 this.id = res.body[0];
@@ -143,6 +154,12 @@ function Mailbox() {
 function Create() {
     const mailbox = new Mailbox();
     mailbox.connect();
+    return mailbox;
+}
+
+function Login(address) {
+    const mailbox = new Mailbox();
+    mailbox.connect(address);
     return mailbox;
 }
 
