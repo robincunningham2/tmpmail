@@ -1,5 +1,5 @@
 {
-  "name": "mail.tm",
+  "name": "tmpmail",
   "version": "1.0.0",
   "description": "NodeJS api for temporary mail",
   "main": "index.js",
