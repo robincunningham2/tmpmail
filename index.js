@@ -81,6 +81,7 @@ function Mailbox() {
      */
     this.on = function(event, callback) {
         this._listeners[event] = callback;
+        return true;
     }
 
     /**
