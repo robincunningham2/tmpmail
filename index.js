@@ -208,6 +208,12 @@ function Mailbox() {
         intervalCallback();
         return true;
     }
+
+    this.stopMessageListener = function() {
+        clearTimeout(this._msgTimeout);
+        this._msgTimeout = null;
+        return true;
+    }
 }
 
 /**
