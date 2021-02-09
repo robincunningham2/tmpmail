@@ -71,6 +71,7 @@ function generateHash(len, used, type='hex') {
 function Mailbox() {
     this._listeners = {};
     this._messages = {};
+    this._msgTimeout = null;
 
     this.id = null;
 
@@ -178,6 +179,34 @@ function Mailbox() {
                 })
                 .catch(reject);
         });
+    }
+
+    /**
+     * Fetches messages for every [interval] ms, until process is stopped,
+     * or Mailbox.prototype.stopMessageListener is called
+     * 
+     * @method Mailbox.prototype.startMessageListener
+     * @param {number} interval Interval between fetches
+     * @param {void} callback Gets called for every fetch
+     * @returns {true}
+     */
+    this.startMessageListener = function(interval, callback) {
+        let messages = [];
+        let intervalCallback = () => {
+            this.fetch().then(msgs => {
+                messages = [];
+                msgs.forEach(msg => {
+                    delete msg._uid;
+                    messages.push(msg);
+                });
+
+                callback(messages);
+                this._msgTimeout = setTimeout(intervalCallback, interval);
+            });
+        };
+        
+        intervalCallback();
+        return true;
     }
 }
 
