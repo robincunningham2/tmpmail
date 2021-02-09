@@ -47,16 +47,13 @@ function generateHash(len, used, type='hex') {
 }
 
 function Mailbox() {
-    let id;
-    this.id = id;
+    this.id;
 
     this.connect = function() {
         return new Promise((resolve, reject) => {
             get('/?action=genRandomMailbox').then(res => {
-                if (res.status < 300 && res.status > 199) {
-                    this.id = res.body[0];
-                    resolve(this.id);
-                } else reject(res);
+                this.id = res.body[0];
+                resolve(this.id);
             }).catch(reject);
         });
     }
