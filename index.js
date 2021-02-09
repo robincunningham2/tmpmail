@@ -58,6 +58,32 @@ function Mailbox() {
         });
     }
 
+    this.fetchMessages = function() {
+        return new Promise((resolve, reject) => {
+            get(`/?action=getMessages&login=${this.id.split('@')[0]}&domain=${this.id.split('@')[1]}`)
+                .then(res => {
+                    let messages = [],
+                        tokens = [];
+                    
+                    res.body.forEach(msg => {
+                        let id = generateHash(16);
+
+                        tokens.push(id);
+                        messages.push({
+                            _id: id,
+                            from: msg.from,
+                            to: this.id,
+                            subject: msg.subject,
+                            date: new Date.now(msg.date)
+                        });
+                    });
+
+                    resolve(messages);
+                })
+                .catch(reject);
+        });
+    }
+
     this.destroy = function() {
 
     }
