@@ -33,6 +33,19 @@ function get(path) {
     });
 }
 
+function generateHash(len, used, type='hex') {
+    let hash = '';
+    for (let i = 0; i < len * 2; i++) {
+        hash += '0123456789abcdef'[Math.floor(Math.random() * 16)];
+    }
+
+    hash = Buffer.from(hash, 'hex');
+
+    if (used.includes(hash.toString(type))) hash = generateHash(len, used, type);
+
+    return hash;
+}
+
 function Mailbox() {
     let id;
     this.id = id;
