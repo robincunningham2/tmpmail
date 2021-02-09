@@ -1,74 +1,54 @@
 
 'use strict';
 
-const http = require('http');
-const HOST = 'www.1secmail.com';
-const PATH = '/api/v1';
+const https = require('https');
 
-/**
- * Makes a request from a method, path and optionally, data
- * 
- * @method makeRequest
- * @param {string} method Request method in uppercase. e.g. GET, POST, etc
- * @param {string} path Request path from api.mail.tm
- * @param {*} data Optional. If request is POST, this parameter will be posted
- * @returns {Promise<Object>} Status code and data
- * @private
- */
-function makeRequest(method, path, data='') {
-    let options = {
-        host: HOST,
-        port: '80',
-        path: PATH + path,
-        mathod,
-        headers: {
-            Accept: 'application/json'
-        }
-    };
+const API_URL = 'https://www.1secmail.com/api/v1';
 
-    if (method == 'POST') options.headers['Content-Type'] = 'application/json';
-
+function get(path) {
     return new Promise((resolve, reject) => {
-        const request = http.request(options, (res) => {
-            let data = '';
-
-            res.setEncoding('utf8');
-            res.on('data', (chunk) => data += chunk);
-            res.on('end', () => {
-                try {
-                    data = JSON.parse(data);
-                } catch {}
-
-                resolve({
+        https.get(API_URL + path,
+            (res) => {
+                let response = {
                     status: res.statusCode,
-                    data
+                    body: ''
+                };
+
+                res.on('data', (chunk) => response.body += chunk);
+                res.on('end', () => {
+                    try {
+                        response.body = JSON.parse(response.body);
+                    } catch {}
+
+                    if (res.status < 200 || res.status > 299) {
+                        return reject(response);
+                    }
+
+                    resolve(response);
                 });
-            });
-        });
 
-        request.on('error', reject);
-
-        if (method == 'POST') request.write(JSON.stringify(data));
-        request.end();
+                res.on('error', reject);
+            }
+        );
     });
 }
 
-/**
- * Retrieves all temporary mail domains
- * 
- * @method domains
- * @returns {Promise<Array<String>>} Domains
- * @private
- */
-function domains() {
-    return new Promise((resolve, reject) => {
-        makeRequest('GET', '/domains').then(res => {
-            let domains = [];
-            res.data.forEach(domain => {
-                if (domain.is_active && !domain.is_private) domains.push(domain.domain);
-            });
+function Mailbox() {
+    let id;
+    this.id = id;
 
-            resolve(domains);
-        }).catch(reject);
-    });
+    this.connect = function() {
+        return new Promise((resolve, reject) => {
+            get('/?action=genRandomMailbox').then(res => {
+                if (res.status < 300 && res.status > 199) {
+                    this.id = res.body[0];
+                    resolve(this.id);
+                } else reject(res);
+            }).catch(reject);
+        });
+    }
+
+    this.destroy = function() {
+
+    }
 }
