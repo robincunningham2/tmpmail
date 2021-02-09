@@ -148,6 +148,13 @@ function Mailbox() {
         });
     }
 
+    /**
+     * Retrieve message content and meta data
+     * 
+     * @method Mailbox.prototype.findMessage
+     * @param {string} id Message id
+     * @returns {Promise<object>} Message
+     */
     this.findMessage = function(id) {
         return new Promise((resolve, reject) => {
             if (!this._messages[id]) return reject('Invalid ID');
