@@ -200,8 +200,8 @@ function Mailbox() {
                     messages.push(msg);
                 });
 
-                callback(messages);
                 this._msgTimeout = setTimeout(intervalCallback, interval);
+                callback(messages);
             });
         };
         
@@ -214,7 +214,7 @@ function Mailbox() {
      * @method Mailbox.prototype.stopMessageListener
      * @returns {true}
      */
-    this.stopMessageListener = function() {
+    this.stopMessageListener = () => {
         clearTimeout(this._msgTimeout);
         this._msgTimeout = null;
         return true;
