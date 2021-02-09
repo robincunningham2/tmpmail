@@ -89,6 +89,7 @@ function Mailbox() {
      * @returns {Promise<String>} Mail address
      */
     this.connect = function() {
+        delete this.connect;
         new Promise((resolve, reject) => {
             get('/?action=genRandomMailbox').then(res => {
                 this.id = res.body[0];
@@ -96,8 +97,6 @@ function Mailbox() {
                 if (this._listeners['ready']) this._listeners['ready'](this.id);
                 resolve(this.id);
             }).catch(reject);
-
-            delete this.connect;
         });
     }
 
@@ -131,4 +130,10 @@ function Mailbox() {
                 .catch(reject);
         });
     }
+}
+
+function Create() {
+    const mailbox = new Mailbox();
+    mailbox.connect();
+    return mailbox;
 }
