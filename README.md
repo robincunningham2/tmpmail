@@ -1,2 +1,7 @@
 # Temporary Mail
-NodeJS api for temporary mail
+NodeJS api for temporary emails
+
+## Install
+```bash
+npm install tmpmail
+```
