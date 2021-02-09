@@ -72,6 +72,13 @@ function Mailbox() {
     this._listeners = {};
     this.id = null;
 
+    /**
+     * Adds an event listener to the mailbox
+     * 
+     * @method Mailbox.prototype.on
+     * @param {string} event Event to be listened to
+     * @param {function} callback Calls when event is executed
+     */
     this.on = function(event, callback) {
         this._listeners[event] = callback;
     }
