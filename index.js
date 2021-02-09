@@ -48,7 +48,7 @@ function makeRequest(method, path, data='') {
 
         request.on('error', reject);
 
-        if (method == 'POST') request.write(data);
+        if (method == 'POST') request.write(JSON.stringify(data));
         request.end();
     });
 }
