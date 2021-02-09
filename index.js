@@ -2,7 +2,8 @@
 'use strict';
 
 const http = require('http');
-const HOST = 'api.mail.tm';
+const HOST = 'www.1secmail.com';
+const PATH = '/api/v1';
 
 /**
  * Makes a request from a method, path and optionally, data
@@ -18,7 +19,8 @@ function makeRequest(method, path, data='') {
     let options = {
         host: HOST,
         port: '80',
-        path, method,
+        path: PATH + path,
+        mathod,
         headers: {
             Accept: 'application/json'
         }
