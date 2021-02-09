@@ -157,6 +157,14 @@ function Create() {
     return mailbox;
 }
 
+/**
+ * Logs in to an existing mailbox
+ * 
+ * @method Login
+ * @param {string} address Created temporary mail address
+ * @returns {Mailbox} The mailbox
+ * @public
+ */
 function Login(address) {
     const mailbox = new Mailbox();
     mailbox.connect(address);
