@@ -209,6 +209,11 @@ function Mailbox() {
         return true;
     }
 
+    /**
+     * Stops the messagelistener created with Mailbox.prototype.startMessageListener
+     * @method Mailbox.prototype.stopMessageListener
+     * @returns {true}
+     */
     this.stopMessageListener = function() {
         clearTimeout(this._msgTimeout);
         this._msgTimeout = null;
