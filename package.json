@@ -15,7 +15,7 @@
     "temporary-email"
   ],
   "author": "Robin Cunningham",
-  "license": "UNLICENSED",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/robincunningham2/mail.tm/issues"
   },
