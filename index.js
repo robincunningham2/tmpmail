@@ -170,7 +170,7 @@ function Mailbox() {
 
             if (!message) return reject('Invalid ID');
 
-            get(`/?action=readMessage&login=${this.id.split('@')[0]}&domain=${this.id.split('@')[1]}&id=${msg._uid}`)
+            get(`/?action=readMessage&login=${this.id.split('@')[0]}&domain=${this.id.split('@')[1]}&id=${message._uid}`)
                 .then(res => {
                     resolve(Object.assign(message, {
                         body: {
