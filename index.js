@@ -70,9 +70,9 @@ function generateHash(len, used, type='hex') {
  */
 function Mailbox() {
     this._listeners = {};
-    this._messages = {};
     this._msgTimeout = null;
 
+    this.messages = [];
     this.id = null;
 
     /**
@@ -124,13 +124,20 @@ function Mailbox() {
         return new Promise((resolve, reject) => {
             get(`/?action=getMessages&login=${this.id.split('@')[0]}&domain=${this.id.split('@')[1]}`)
                 .then(res => {
-                    let messages = [],
-                        tokens = [];
+                    let tokens = [];
                     
                     res.body.forEach(msg => {
+                        let cntinue = true;
+                        this.messages.forEach(message => {
+                            if (message._uid == msg._uid) cntinue = false;
+                        });
+
+                        if (!cntinue) return;
+
                         let id = generateHash(16, tokens, 'hex').toString('hex');
                         let message = {
                             _id: id,
+                            _uid: msg.id,
                             from: msg.from,
                             to: this.id,
                             subject: msg.subject,
@@ -138,12 +145,10 @@ function Mailbox() {
                         };
 
                         tokens.push(id);
-                        messages.push(message);
-
-                        this._messages[id] = Object.assign(message, { _uid: msg.id });
+                        this.messages.push(message);
                     });
 
-                    resolve(messages);
+                    resolve(this.messages);
                 })
                 .catch(reject);
         });
@@ -158,24 +163,21 @@ function Mailbox() {
      */
     this.findMessage = function(id) {
         return new Promise((resolve, reject) => {
-            if (!this._messages[id]) return reject('Invalid ID');
-            let msg = this._messages[id];
+            let message = false;
+            this.messages.forEach(msg => {
+                if (msg._id == id) message = msg;
+            });
+
+            if (!message) return reject('Invalid ID');
 
             get(`/?action=readMessage&login=${this.id.split('@')[0]}&domain=${this.id.split('@')[1]}&id=${msg._uid}`)
                 .then(res => {
-                    let message = {
-                        _id: msg._id,
-                        from: msg.from,
-                        to: msg.to,
-                        subject: msg.subject,
-                        date: msg.date,
+                    resolve(Object.assign(message, {
                         body: {
                             text: res.body.textBody,
                             html: res.body.htmlBody
                         }
-                    };
-
-                    resolve(message);
+                    }));
                 })
                 .catch(reject);
         });
@@ -193,15 +195,17 @@ function Mailbox() {
     this.startMessageListener = function(interval, callback) {
         let messages = [];
         let intervalCallback = () => {
+            let isnew = [];
             this.fetch().then(msgs => {
-                messages = [];
                 msgs.forEach(msg => {
-                    delete msg._uid;
-                    messages.push(msg);
+                    if (messages.includes(msg._uid)) return;
+                    messages.push(msg._uid);
+                    isnew.push(msg);
                 });
 
                 this._msgTimeout = setTimeout(intervalCallback, interval);
-                callback(messages);
+                if (isnew.length) callback(isnew);
+                isnew = [];
             });
         };
         
