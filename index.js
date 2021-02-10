@@ -184,7 +184,7 @@ function Mailbox() {
     }
 
     /**
-     * Fetches messages for every [interval] ms, until process is stopped,
+     * Fetches new messages for every [interval] ms, until process is stopped,
      * or Mailbox.prototype.stopMessageListener is called
      * 
      * @method Mailbox.prototype.startMessageListener
