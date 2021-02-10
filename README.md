@@ -80,3 +80,18 @@ Example output:
   }
 }
 ```
+
+* __Create a message listener__
+
+```js
+// Check every 1000ms (1s) for new messages
+client.startMessageListener(1000, msgs => {
+  console.log('Got some new message(s):\n', msgs);
+});
+
+// Stop the listener after 10s
+setTimeout(client.stopMessageListener, 10000);
+```
+
+## License
+[Apache 2.0](LICENSE)
