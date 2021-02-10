@@ -10,7 +10,7 @@ const API_URL = 'https://www.1secmail.com/api/v1';
  * 
  * @method get
  * @param {string} path Api endpoint path
- * @returns {Promise<Object>} Status code and body
+ * @returns {Promise<object>} Status code and body
  * @private
  */
 function get(path) {
@@ -90,7 +90,7 @@ function Mailbox() {
     /**
      * Connects the mailbox with a random mail address
      * @method Mailbox.prototype.connect
-     * @returns {Promise<String>} Mail address
+     * @returns {Promise<string>} Mail address
      */
     this.connect = function(address) {
         delete this.connect;
